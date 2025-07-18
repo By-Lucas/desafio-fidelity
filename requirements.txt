@@ -1,0 +1,4 @@
+mariadb==1.1.13
+selenium==4.34.2
+python-decouple==3.8
+webdriver-manager==4.0.2
