@@ -3,7 +3,6 @@ __pycache__/
 *$py.class
 .env
 venv/
-.env/
 .vscode/
 .idea/
 selenium-debug.log

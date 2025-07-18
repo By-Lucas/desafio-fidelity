@@ -1,4 +1,9 @@
+import sys
+import os
 from decouple import config
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from config.db import DatabaseConnection
 
 
@@ -7,14 +12,15 @@ def create_tables():
         host=config("DB_HOST"),
         user=config("DB_USER"),
         password=config("DB_PASSWORD"),
-        database=config("DB_NAME")
+        database=config("DB_NAME"),
+        port=int(config("DB_PORT", default=5432))
     )
 
     create_statements = [
         # Tabela de estados (UF)
         """
         CREATE TABLE IF NOT EXISTS estado (
-            Cod_UF INT PRIMARY KEY AUTO_INCREMENT,
+            Cod_UF SERIAL PRIMARY KEY,
             UF VARCHAR(2) NOT NULL
         )
         """,
@@ -22,7 +28,7 @@ def create_tables():
         # Tabela de serviços
         """
         CREATE TABLE IF NOT EXISTS servico (
-            Cod_Servico INT PRIMARY KEY AUTO_INCREMENT,
+            Cod_Servico SERIAL PRIMARY KEY,
             nome VARCHAR(100)
         )
         """,
@@ -30,7 +36,7 @@ def create_tables():
         # Tabela de lotes
         """
         CREATE TABLE IF NOT EXISTS lote (
-            cod_lote INT PRIMARY KEY AUTO_INCREMENT,
+            cod_lote SERIAL PRIMARY KEY,
             descricao VARCHAR(100)
         )
         """,
@@ -47,7 +53,7 @@ def create_tables():
         # Tabela principal de pesquisa
         """
         CREATE TABLE IF NOT EXISTS pesquisa (
-            Cod_Pesquisa INT PRIMARY KEY AUTO_INCREMENT,
+            Cod_Pesquisa SERIAL PRIMARY KEY,
             Cod_Cliente INT,
             Cod_Servico INT,
             Cod_UF INT,
@@ -76,6 +82,9 @@ def create_tables():
             filtro INT,
             Resultado VARCHAR(255),
             cod_spv_tipo INT,
+            Cod_spv_computador INT,
+            Cod_Funcionario INT,
+            website_id INT,
             PRIMARY KEY (Cod_Pesquisa, Cod_SPV, filtro)
         )
         """

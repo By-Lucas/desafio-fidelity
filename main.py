@@ -26,9 +26,9 @@ def main():
     service = ScrapingService(ResultRepository(db), scrapers)
 
     pesquisas = [
-        Research(filtro=0, cpf="12345678901", cod_pesquisa=101),
-        Research(filtro=1, rg="4567890", cod_pesquisa=102),
-        Research(filtro=2, nome="Lucas Silva", cod_pesquisa=103),
+        #Research(filtro=0, cpf="12345678901", cod_pesquisa=101),
+       # Research(filtro=1, rg="4567890", cod_pesquisa=102),
+        Research(filtro=2, nome="Lucas da Silva dos Santos"), #, cod_pesquisa=103
     ]
 
     service.processar(pesquisas)

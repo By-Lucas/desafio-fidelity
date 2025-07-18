@@ -23,13 +23,25 @@ class ScrapingService:
 
             for scraper in self.scrapers:
                 if scraper.can_handle(pesquisa):
-                    html = scraper.executar(pesquisa)
-                    resultado = self._checar_resultado(html)
+                    processos = scraper.executar(pesquisa)  # ← agora retorna uma lista de dicts com dados estruturados
+                    resultado = CONSTA01 if processos else NADA_CONSTA
+
                     self.repo.salvar_resultado(pesquisa, resultado)
                     print(f"[OK] Resultado {resultado} salvo para {pesquisa}")
+
+                    if processos:
+                        for processo in processos:
+                            self.repo.salvar_pesquisa(
+                                self.repo.db,
+                                processo,
+                                cod_cliente=pesquisa.cod_cliente,
+                                cod_servico=pesquisa.cod_servico
+                            )
+                            print(f"📥 Processo salvo: {processo['codigo_processo']}")
                     break
             else:
                 print(f"[ERRO] Nenhum scraper disponível para o filtro {pesquisa.filtro}")
+
 
     def _checar_resultado(self, html: str) -> int:
         if FRASE_NADA_CONSTA in html:
