@@ -10,6 +10,8 @@ class Research:
     rg: Optional[str] = None
     nome: Optional[str] = None
     cod_pesquisa: Optional[int] = 123  # Temporário: depois vamos buscar do banco
+    cod_cliente: int = 1
+    cod_servico: int = 1
 
     def get_documento(self) -> str:
         if self.filtro == 0 and self.cpf:
