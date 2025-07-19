@@ -6,6 +6,8 @@ Este projeto realiza **web scraping avançado** no site do **Tribunal de Justiç
 
 > Foco em confiabilidade, rastreabilidade e automação de ponta a ponta.
 
+## OBS: O projeto foi feico em curto periodo de tempo.
+
 ---
 
 ## Funcionalidades
