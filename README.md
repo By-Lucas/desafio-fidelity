@@ -2,26 +2,29 @@
 
 ## Visão Geral
 
-Este projeto realiza **web scraping automatizado** no site do **Tribunal de Justiça de São Paulo (TJSP)** para extrair informações de processos judiciais vinculados a pessoas físicas (CPF, RG, nome).
+Este projeto realiza **web scraping avançado** no site do **Tribunal de Justiça de São Paulo (TJSP)**, extraindo e persistindo dados estruturados de processos judiciais. Toda a automação está conectada a um banco **PostgreSQL**, com suporte a **backup inteligente em Excel** em caso de falha, e recuperação automática de dados ao reiniciar o sistema.
 
-Os dados extraídos são persistidos em um banco de dados **PostgreSQL**, com tratamento de erros e criação automática de backups em **Excel (xlsx)** caso o salvamento falhe.
+> Foco em confiabilidade, rastreabilidade e automação de ponta a ponta.
 
 ---
 
 ## Funcionalidades
 
-* Consulta de processos por **nome completo**, **CPF** ou **RG**;
-* Paginação automática de resultados no TJSP;
-* Raspagem de detalhes dos processos (classe, assunto, vara, distribuição etc.);
-* Estrutura relacional com inserção em várias tabelas (pesquisa, resultado, lote etc.);
-* Criação automática de backups se houver falha ao salvar no banco;
-* Reprocessamento automático a partir de backups ao reiniciar.
+* 📄 Consulta de processos por **nome completo**, **CPF** ou **RG**;
+* 🔁 Paginação e scraping de múltiplas páginas de resultados;
+* 🧾 Coleta de dados como: número do processo, foro, vara, classe, assunto e datas;
+* 🗃️ Estrutura relacional com múltiplas tabelas:
+
+  * `pesquisa`, `pesquisa_spv`, `lote`, `lote_pesquisa`, `estado`, `servico`
+* 💥 Backup automático `.xlsx` em caso de falha na gravação dos dados;
+* 🔁 Reprocessamento de backups pendentes antes de executar novo scraping;
+* 🔄 Suporte a atualização ou ignorar dados já existentes (via `.env`).
 
 ---
 
 ## Como Executar
 
-### 1. Instalar dependências
+### 1. Clonar o repositório e instalar dependências
 
 ```bash
 python -m venv venv
@@ -29,27 +32,33 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Configurar .env
+### 2. Configurar variáveis de ambiente
 
-Crie um arquivo `.env` na raiz com os dados do seu banco PostgreSQL:
+Crie um arquivo `.env` com as informações do seu banco PostgreSQL:
 
-```env
+```ini
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=meu_banco
 DB_USER=meu_usuario
 DB_PASSWORD=minha_senha
 
-UPDATE_EXISTING_RECORDS=false
+UPDATE_EXISTING_RECORDS=false  # ou true para atualizar registros existentes
 ```
 
-### 3. Gerar as tabelas do banco
+### 3. Criar as tabelas no banco
 
 ```bash
-python create_tables.py
+python scripts/create_tables.py
 ```
 
-### 4. Executar o scraping
+### 4. (Opcional) Inserir dados mock para teste
+
+```bash
+python scripts/insert_mock_data.py
+```
+
+### 5. Executar o scraping
 
 ```bash
 python main.py
@@ -57,48 +66,47 @@ python main.py
 
 ---
 
-## Modo de Funcionamento
+## Estrutura de Dados
 
-1. O sistema recebe uma lista de `Research` contendo os dados da pessoa (nome/CPF/RG);
-2. Um dos scrapers (ex: TJSP) é escolhido com base no filtro;
-3. O scraper executa o scraping, pagina os resultados, e retorna uma lista de dicionários;
-4. Os dados são inseridos no banco (estado, pesquisa, lote, resultados);
-5. Se houver falha no salvamento, os dados são salvos automaticamente em `backup_YYYY-MM-DD_HH-MM.xlsx`;
-6. Na próxima execução, se houver backup, ele é processado antes de iniciar novo scraping.
+### 🔹 Tabela `pesquisa`
 
----
+Representa os dados da pessoa consultada (nome, CPF, RG, data de nascimento etc.).
 
-## Dados Salvos no Banco
+### 🔹 Tabela `pesquisa_spv`
 
-### Tabela `pesquisa`
+Registra o resultado da consulta feita (nada consta, consta criminal, consta cível, erro).
 
-* nome
-* cpf
-* rg
-* data\_entrada / conclusao
-* cod\_cliente / cod\_servico
+### 🔹 Tabela `lote` e `lote_pesquisa`
 
-### Tabela `pesquisa_spv`
+Permitem agrupar múltiplas pesquisas em "lotes" para controle e rastreabilidade.
 
-* cod\_pesquisa
-* resultado (0=nada consta, 1=criminal, 2=civil)
-* filtro
+### 🔹 Tabela `estado`
 
-### Tabela `lote` e `lote_pesquisa`
+Armazena os estados/UF das origens dos processos.
 
-* agrupam pesquisas por lote automático
+### 🔹 Tabela `servico`
 
-### Tabela `estado`
-
-* salva os UF dos processos
+Define o tipo de consulta associada à pesquisa (ex: TJSP).
 
 ---
 
-## Backups
+## Sistema de Backup
 
-* Se ocorrer erro ao salvar no banco, os dados do processo são exportados para um arquivo `.xlsx` no mesmo diretório
-* O nome segue o formato `backup_YYYY-MM-DD_HH-MM.xlsx`
-* Ao iniciar o script, ele procura por esse backup e, se encontrar, importa os dados antes de qualquer raspagem
-* Após o processamento bem-sucedido do backup, o arquivo é removido automaticamente
+* Toda vez que houver falha ao salvar no banco, os dados da pesquisa são exportados em `.xlsx` no diretório raiz.
+* O nome do arquivo segue o padrão: `backup_YYYY-MM-DD_HH-MM-SS.xlsx`.
+* Na próxima execução, o sistema verifica a existência desses backups e os processa **antes** de iniciar novo scraping.
+* Após processar os backups com sucesso, o sistema os remove automaticamente.
+
+---
+
+## Design Robusto e Profissional
+
+Este projeto foi desenvolvido com foco em:
+
+* Boas práticas de engenharia de dados
+* Organização modular e desacoplada (models, services, repositories, utils)
+* Tolerância a falhas com rotas de fallback
+* Performance com scraping paginado e seletivo
+* Logs e mensagens compreensíveis em CLI
 
 ---
