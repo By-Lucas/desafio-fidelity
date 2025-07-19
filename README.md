@@ -58,7 +58,8 @@ python scripts/insert_mock_data.py
 ```
 
 ### 5. Executar o scraping
-
+- No arquivo main.py você pode alterar o meio de pesquisa se necessário
+![alt text](image.png)
 ```bash
 python main.py
 ```
