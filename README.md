@@ -38,10 +38,9 @@ Crie um arquivo `.env` com as informações do seu banco PostgreSQL:
 
 ```ini
 DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=meu_banco
-DB_USER=meu_usuario
-DB_PASSWORD=minha_senha
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=teste_fidelity
 
 UPDATE_EXISTING_RECORDS=false  # ou true para atualizar registros existentes
 ```
