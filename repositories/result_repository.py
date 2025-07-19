@@ -136,7 +136,7 @@ class ResultRepository:
             return result[0]
 
         cursor.execute("""
-            INSERT INTO lote (descricao, data_criacao, cod_funcionario, tipo, prioridade)
-            VALUES (%s, %s, -1, 'automatica', 'normal') RETURNING cod_lote
-        """, ("Lote Automático", datetime.now()))
+            INSERT INTO lote (descricao, cod_funcionario, tipo, prioridade)
+            VALUES (%s, -1, 'automatica', 'normal') RETURNING cod_lote
+        """, ("Lote Automático",))
         return cursor.fetchone()[0]
