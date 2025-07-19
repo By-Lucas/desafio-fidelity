@@ -64,7 +64,7 @@ def insert_mock_data():
             ON CONFLICT (Cod_Pesquisa, Cod_SPV, filtro) DO NOTHING
         """, (None,))
 
-    print("✅ Dados mockados inseridos com sucesso.")
+    print("Dados mockados inseridos com sucesso.")
 
 
 if __name__ == "__main__":
