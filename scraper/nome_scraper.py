@@ -1,7 +1,6 @@
-# scraper/nome_scraper.py
-
-from scraper.base_scraper import BaseScraper
 from models.research import Research
+from scraper.base_scraper import BaseScraper
+
 
 class NomeScraper(BaseScraper):
     def can_handle(self, pesquisa: Research) -> bool:

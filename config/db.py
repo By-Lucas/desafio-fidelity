@@ -1,6 +1,7 @@
 import psycopg2
 from contextlib import contextmanager
 
+
 class DatabaseConnection:
     def __init__(self, host: str, user: str, password: str, database: str, port: int = 5432):
         self.config = {

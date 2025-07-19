@@ -1,12 +1,14 @@
-from scraper.scraper_executor import ScraperExecutor
-from scraper.cpf_scraper import CPFScraper
-from scraper.rg_scraper import RGScraper
-from scraper.nome_scraper import NomeScraper
-from repositories.result_repository import ResultRepository
-from services.scraping_service import ScrapingService
-from config.db import DatabaseConnection
 from decouple import config
+
 from models.research import Research
+from config.db import DatabaseConnection
+from scraper.rg_scraper import RGScraper
+from scraper.cpf_scraper import CPFScraper
+from scraper.nome_scraper import NomeScraper
+from scraper.scraper_executor import ScraperExecutor
+from services.scraping_service import ScrapingService
+from repositories.result_repository import ResultRepository
+
 
 def main():
     db = DatabaseConnection(
