@@ -1,7 +1,10 @@
-# scripts/insert_mock_data.py
-
+import os
+import sys
 from datetime import date
 from decouple import config
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from config.db import DatabaseConnection
 
 
