@@ -34,10 +34,14 @@ def create_tables():
         """,
 
         # Tabela de lotes
-        """
+       """
         CREATE TABLE IF NOT EXISTS lote (
             cod_lote SERIAL PRIMARY KEY,
-            descricao VARCHAR(100)
+            descricao VARCHAR(100),
+            cod_funcionario INT,
+            tipo VARCHAR(50),
+            prioridade VARCHAR(50),
+            data_criacao DATE DEFAULT CURRENT_DATE
         )
         """,
 
