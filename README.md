@@ -19,36 +19,13 @@ Os dados extraídos são persistidos em um banco de dados **PostgreSQL**, com tr
 
 ---
 
-## Estrutura de Pastas
-
-```
-├── config/
-│   └── db.py                  # Conexão com PostgreSQL
-├── models/
-│   └── research.py            # Classe Research (entrada de dados)
-├── repositories/
-│   └── result_repository.py   # Salva resultados no banco, com backup
-├── scrapers/
-│   └── tjsp_scraper.py        # Scraper para o TJSP
-├── services/
-│   └── scraping_service.py    # Orquestra os scrapers e controle de fluxo
-├── utils/
-│   └── constants.py           # Frases padrões para checagem
-├── main.py                    # Script principal
-├── create_tables.py           # Script de criação de tabelas
-├── .env                       # Variáveis de ambiente
-├── backup_*.xlsx              # (auto gerado) backups em caso de falha
-```
-
----
-
 ## Como Executar
 
 ### 1. Instalar dependências
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # ou venv\Scripts\activate no Windows
+venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
