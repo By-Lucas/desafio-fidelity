@@ -6,3 +6,4 @@ venv/
 .idea/
 selenium-debug.log
 *.log
+*.xlsx
