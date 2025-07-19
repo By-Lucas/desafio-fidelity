@@ -150,10 +150,10 @@ class ResultRepository:
         import pandas as pd
 
         try:
-            df = pd.DataFrame([dados])  # uma única linha
+            df = pd.DataFrame([dados])
             timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             path = f"backup_{timestamp}.xlsx"
             df.to_excel(path, index=False)
-            print(f"⚠️ Backup salvo em {path}")
+            print(f"Backup salvo em {path}")
         except Exception as e:
-            print(f"❌ Falha ao salvar backup: {e}")
+            print(f"Falha ao salvar backup: {e}")
