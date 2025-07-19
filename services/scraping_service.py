@@ -30,7 +30,7 @@ class ScrapingService:
                 print(f"Carregando backup: {backup_file}")
                 df = pd.read_excel(backup_file)
                 for _, row in df.iterrows():
-                    self.repo.salvar_dados_completos(pesquisa, row.to_dict(), CONSTA01)
+                    self.repo.save_full_data(pesquisa, row.to_dict(), CONSTA01)
                 os.remove(backup_file)
                 print("Backup processado e removido.")
                 continue
@@ -40,12 +40,12 @@ class ScrapingService:
                     processos = scraper.executar(pesquisa)
                     resultado = CONSTA01 if processos else NADA_CONSTA
 
-                    self.repo.salvar_resultado(pesquisa, resultado)
+                    self.repo.save_result(pesquisa, resultado)
                     print(f"[OK] Resultado {resultado} salvo para {pesquisa}")
 
                     if processos:
                         for processo in processos:
-                            self.repo.salvar_dados_completos(pesquisa, processo, resultado)
+                            self.repo.save_full_data(pesquisa, processo, resultado)
                             print(f"Processo salvo: {processo['codigo_processo']}")
                     break
             else:

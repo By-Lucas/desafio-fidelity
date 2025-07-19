@@ -12,7 +12,7 @@ class ResultRepository:
         self.db = db
         
 
-    def salvar_resultado(self, pesquisa: Research, resultado: int) -> None:
+    def save_result(self, pesquisa: Research, resultado: int) -> None:
         sql = """
         INSERT INTO pesquisa_spv (
             Cod_Pesquisa, Cod_SPV, Cod_spv_computador, Cod_Spv_Tipo, Resultado, Cod_Funcionario, filtro, website_id
@@ -24,7 +24,7 @@ class ResultRepository:
         with self.db.get_cursor() as cursor:
             cursor.execute(sql, (pesquisa.cod_pesquisa, resultado, pesquisa.filtro))
 
-    def salvar_dados_completos(self, pesquisa: Research, dados: dict, resultado: int) -> None:
+    def save_full_data(self, pesquisa: Research, dados: dict, resultado: int) -> None:
         try:
             with self.db.get_cursor() as cursor:
                 # 1. Garantir estado (UF)
