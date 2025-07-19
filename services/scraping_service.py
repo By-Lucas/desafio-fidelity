@@ -18,7 +18,7 @@ class ScrapingService:
 
     def processar(self, pesquisas: list[Research]) -> None:
         for pesquisa in pesquisas:
-            print(f"🔎 Executando filtro {pesquisa.filtro}...")
+            print(f"Executando filtro {pesquisa.filtro}...")
 
             for scraper in self.scrapers:
                 if scraper.can_handle(pesquisa):
